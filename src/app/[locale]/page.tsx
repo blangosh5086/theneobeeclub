@@ -3,6 +3,7 @@ import Banner from "@/components/Banner";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import ArtistsSection from "@/components/ArtistsSection";
+import LiveHighlightSection from "@/components/LiveHighlightSection";
 import MusicSection from "@/components/MusicSection";
 import ContactSection from "@/components/ContactSection";
 import { setRequestLocale } from "next-intl/server";
@@ -41,6 +42,7 @@ export default async function Home(props: { params: Promise<{ locale: string }> 
         <HeroSection />
         <AboutSection />
         <ArtistsSection />
+        <LiveHighlightSection />
         <MusicSection />
         <ContactSection />
       </main>

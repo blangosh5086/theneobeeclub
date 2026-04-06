@@ -4,11 +4,14 @@
     "artists": "Artists",
     "music": "Music",
     "contact": "Contact",
-    "works": "Our Works"
+    "works": "Our Works",
+    "live": "Live Visuals"
   },
   "hero": {
     "title": "The NeoBee Club - Dublin Music Collective",
-    "subtitle": "A Dublin-based collective of music lovers exploring soulful, jazzy, and electronic sounds. Join us as we share the joy of music through DJ sets, live performances, and creative collaborations."
+    "subtitle": "A Dublin-based collective of music lovers exploring soulful, jazzy, and electronic sounds. Join us as we share the joy of music through DJ sets, live performances, and creative collaborations.",
+    "openGhostframe": "Try Ghostframe",
+    "exploreWorks": "Explore Our Works"
   },
   "about": {
     "title": "About The NeoBee Club",
@@ -37,7 +40,16 @@
     "title": "Connect With The NeoBee Club"
   },
   "banner": {
-    "newVideo": "New video is out!",
-    "watchNow": "Watch Now"
+    "launch": "Ghostframe is live!",
+    "cta": "Try it now"
+  },
+  "liveHighlight": {
+    "eyebrow": "Interactive Feature",
+    "title": "Step Into Ghostframe",
+    "description": "A live camera-reactive visualizer built for artists, musicians, experimentation, and motion-driven performance visuals.",
+    "featureOne": "Live camera input with motion-reactive ghost trails",
+    "featureTwo": "Fullscreen stage view with live visual tuning",
+    "featureThree": "Desktop-first experience with a simplified mobile mode",
+    "cta": "Launch Ghostframe"
   }
 }

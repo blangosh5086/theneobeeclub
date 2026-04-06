@@ -11,6 +11,8 @@ const Navbar = () => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const visualAppUrl = process.env.NEXT_PUBLIC_VISUAL_APP_URL || "https://visual.theneobee.club";
+  const liveHref = `${visualAppUrl.replace(/\/$/, "")}/?locale=${locale}&source=neobee`;
 
   // Remove locale prefix from pathname for switching
   const pathWithoutLocale = pathname.replace(/^\/(en|zh)/, "");
@@ -27,6 +29,7 @@ const Navbar = () => {
   const navLinks = [
     { href: `/${locale}/#artists`, label: t("artists") },
     { href: `/${locale}/works`, label: t("works") },
+    { href: liveHref, label: t("live"), external: true },
     { href: `/${locale}/#contact`, label: t("contact") }
   ];
 
@@ -113,31 +116,58 @@ const Navbar = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 + index * 0.1 }}
                 >
-                  <Link
-                    href={link.href}
-                    className="relative group px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-                  >
-                    <motion.span
-                      className="relative z-10 group-hover:text-white transition-colors duration-200"
-                      whileHover={{ scale: 1.05 }}
+                  {link.external ? (
+                    <a
+                      href={link.href}
+                      rel="noreferrer"
+                      className="relative group px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
                     >
-                      {link.label}
-                    </motion.span>
-                    {/* Hover background */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-md"
-                      initial={{ scale: 0, opacity: 0 }}
-                      whileHover={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 0.2 }}
-                    />
-                    {/* Active indicator */}
-                    <motion.div
-                      className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"
-                      initial={{ scale: 0 }}
-                      whileHover={{ scale: 1 }}
-                      transition={{ duration: 0.2 }}
-                    />
-                  </Link>
+                      <motion.span
+                        className="relative z-10 group-hover:text-white transition-colors duration-200"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        {link.label}
+                      </motion.span>
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-md"
+                        initial={{ scale: 0, opacity: 0 }}
+                        whileHover={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.2 }}
+                      />
+                      <motion.div
+                        className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"
+                        initial={{ scale: 0 }}
+                        whileHover={{ scale: 1 }}
+                        transition={{ duration: 0.2 }}
+                      />
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="relative group px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                    >
+                      <motion.span
+                        className="relative z-10 group-hover:text-white transition-colors duration-200"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        {link.label}
+                      </motion.span>
+                      {/* Hover background */}
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-md"
+                        initial={{ scale: 0, opacity: 0 }}
+                        whileHover={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.2 }}
+                      />
+                      {/* Active indicator */}
+                      <motion.div
+                        className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"
+                        initial={{ scale: 0 }}
+                        whileHover={{ scale: 1 }}
+                        transition={{ duration: 0.2 }}
+                      />
+                    </Link>
+                  )}
                 </motion.div>
               ))}
             </motion.div>
@@ -212,13 +242,24 @@ const Navbar = () => {
                       visible: { opacity: 1, x: 0 }
                     }}
                   >
-                    <Link
-                      href={link.href}
-                      className="block w-full text-left px-4 py-3 rounded-xl text-base font-medium hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-pink-500/20 transition-all duration-200"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      {link.label}
-                    </Link>
+                    {link.external ? (
+                      <a
+                        href={link.href}
+                        rel="noreferrer"
+                        className="block w-full text-left px-4 py-3 rounded-xl text-base font-medium hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-pink-500/20 transition-all duration-200"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="block w-full text-left px-4 py-3 rounded-xl text-base font-medium hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-pink-500/20 transition-all duration-200"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </motion.div>
                 ))}
 

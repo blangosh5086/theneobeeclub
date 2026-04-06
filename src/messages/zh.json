@@ -4,11 +4,14 @@
     "artists": "艺术家",
     "music": "音乐",
     "contact": "联系",
-    "works": "作品"
+    "works": "作品",
+    "live": "实时视觉"
   },
   "hero": {
     "title": "The NeoBee Club - 都柏林音乐团体",
-    "subtitle": "一个位于都柏林的音乐爱好者团体，探索灵魂、爵士和电子等多元音乐风格。与我们一起通过DJ演出、现场表演和创意合作分享音乐的乐趣。"
+    "subtitle": "一个位于都柏林的音乐爱好者团体，探索灵魂、爵士和电子等多元音乐风格。与我们一起通过DJ演出、现场表演和创意合作分享音乐的乐趣。",
+    "openGhostframe": "体验 Ghostframe",
+    "exploreWorks": "查看我们的作品"
   },
   "about": {
     "title": "关于 The NeoBee Club",
@@ -37,7 +40,16 @@
     "title": "联系 The NeoBee Club"
   },
   "banner": {
-    "newVideo": "新视频发布了！",
-    "watchNow": "立即观看"
+    "launch": "Ghostframe 已上线！",
+    "cta": "立即体验"
+  },
+  "liveHighlight": {
+    "eyebrow": "互动体验",
+    "title": "进入 Ghostframe",
+    "description": "一个面向艺术家、音乐人、实验创作与动作驱动现场视觉的实时摄像头视觉化工具。",
+    "featureOne": "实时摄像头输入与动作响应式残影效果",
+    "featureTwo": "全屏舞台视图与实时视觉调节",
+    "featureThree": "桌面端优先，同时提供简化移动端模式",
+    "cta": "启动 Ghostframe"
   }
 }

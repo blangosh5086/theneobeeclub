@@ -3,28 +3,25 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useTranslations } from "next-intl";
-import { works } from "@/data/works";
+import { useLocale, useTranslations } from "next-intl";
 
 const Banner = () => {
   const [isVisible, setIsVisible] = useState(false);
   const bannerRef = useRef<HTMLDivElement>(null);
+  const locale = useLocale();
   const t = useTranslations("banner");
-
-  // Extract latest video ID from the first entry in works.ts
-  const latestVideoSrc = works[0]?.src || "";
-  const latestVideoId = latestVideoSrc.match(/youtube\.com\/embed\/([^?]+)/)?.[1] || "";
-  const latestVideoUrl = latestVideoId ? `https://www.youtube.com/watch?v=${latestVideoId}` : "";
+  const visualAppUrl = process.env.NEXT_PUBLIC_VISUAL_APP_URL || "https://visual.theneobee.club";
+  const ghostframeHref = `${visualAppUrl.replace(/\/$/, "")}/?locale=${locale}&source=neobee`;
 
   useEffect(() => {
-    // Check if banner was dismissed in localStorage and if there's a valid video URL
+    // Check if banner was dismissed in localStorage
     const dismissedTime = localStorage.getItem("banner-dismissed");
     const shouldShow = !dismissedTime || Date.now() - parseInt(dismissedTime) > 7 * 24 * 60 * 60 * 1000; // Show again after 7 days
 
-    if (shouldShow && latestVideoUrl) {
+    if (shouldShow) {
       setIsVisible(true);
     }
-  }, [latestVideoUrl]);
+  }, []);
 
   // Add/remove top padding to body when banner is visible/hidden
   useEffect(() => {
@@ -67,7 +64,7 @@ const Banner = () => {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="fixed top-0 left-0 right-0 z-40 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 text-white shadow-lg"
           role="banner"
-          aria-label="Latest video announcement"
+          aria-label="Ghostframe announcement"
         >
           <div className="max-w-7xl mx-auto px-1.5 sm:px-4 lg:px-8">
             <div className="flex items-center justify-between py-2 sm:py-3 h-11 sm:h-12">
@@ -90,18 +87,17 @@ const Banner = () => {
 
                 {/* Text content - can truncate if needed */}
                 <span className="font-medium text-xs sm:text-sm lg:text-base truncate flex-shrink min-w-0">
-                  {t("newVideo")}
+                  {t("launch")}
                 </span>
 
-                {/* Watch button - always visible */}
+                {/* CTA button - always visible */}
                 <a
-                  href={latestVideoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={ghostframeHref}
+                  rel="noreferrer"
                   className="font-bold text-white underline hover:text-yellow-200 transition-colors duration-200 text-xs sm:text-sm lg:text-base whitespace-nowrap flex-shrink-0"
-                  aria-label={`${t("watchNow")} - ${t("newVideo")}`}
+                  aria-label={`${t("cta")} - ${t("launch")}`}
                 >
-                  {t("watchNow")}
+                  {t("cta")}
                 </a>
               </div>
 

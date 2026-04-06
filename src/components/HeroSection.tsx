@@ -1,14 +1,16 @@
 "use client";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRef } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 
 const MetaballsEffect = dynamic(() => import("./MetaballsEffect"), { ssr: false });
 
 export default function HeroSection() {
   const t = useTranslations();
+  const locale = useLocale();
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll();
 
@@ -74,6 +76,26 @@ export default function HeroSection() {
         >
           {t("hero.subtitle")}
         </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 0.8 }}
+          className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+        >
+          <Link
+            href={`/${locale}#live`}
+            className="inline-flex min-w-[210px] items-center justify-center rounded-full bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-[0_18px_55px_rgba(56,189,248,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_75px_rgba(56,189,248,0.45)]"
+          >
+            {t("hero.openGhostframe")}
+          </Link>
+          <Link
+            href={`/${locale}/works`}
+            className="inline-flex min-w-[210px] items-center justify-center rounded-full border border-white/20 bg-white/5 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
+          >
+            {t("hero.exploreWorks")}
+          </Link>
+        </motion.div>
       </motion.div>
     </section>
   );
