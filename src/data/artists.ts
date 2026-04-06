@@ -23,6 +23,7 @@ export const artists: Artist[] = [
     bioKey: "artists.haosc_bio",
     imageUrl: "/haosc.webp",
     social: {
+      instagram: "https://www.instagram.com/haosc.official",
       spotify: "https://open.spotify.com/artist/0ASsfvcyv6P3TVLEYLurds",
       youtube: "https://www.youtube.com/@HAOSC",
       bilibili: "https://space.bilibili.com/3546828570101837"
