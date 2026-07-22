@@ -68,8 +68,8 @@ h2,
 h3 {
   font-family: var(--font-playfair), var(--font-noto-sans-sc), Georgia, serif;
   font-weight: 700;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
   text-wrap: balance;
 }
 
@@ -80,8 +80,8 @@ p {
 html[lang="zh"] h1,
 html[lang="zh"] h2,
 html[lang="zh"] h3 {
-  letter-spacing: -0.065em;
-  line-height: 1.08;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
 }
 
 ::selection {
@@ -934,8 +934,8 @@ html[lang="zh"] h3 {
   font-family: var(--font-playfair), Georgia, serif;
   font-size: clamp(2.8rem, 5vw, 5.2rem);
   font-weight: 700;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
 }
 
 .site-footer__links,
@@ -1473,7 +1473,10 @@ html[lang="zh"] h3 {
   }
 
   .experience-card h3 {
-    font-size: clamp(2.7rem, 12vw, 3.3rem);
+    font-size: clamp(2.6rem, 11.3vw, 3.15rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.07;
   }
 
   .section-heading--split {
@@ -1504,24 +1507,36 @@ html[lang="zh"] h3 {
   .experience-section h2,
   .portfolio-direction__copy h2,
   .contact-direct h2 {
-    font-size: clamp(2.8rem, 12.5vw, 3.4rem);
+    font-size: clamp(2.7rem, 11.8vw, 3.2rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.07;
   }
 
   .feature-section .section-heading h2 {
-    font-size: clamp(2.6rem, 14vw, 3.65rem);
+    font-size: clamp(2.7rem, 12.6vw, 3.35rem);
   }
 
   .studio-preview__copy h2,
   .about-strip h2 {
-    font-size: clamp(2.7rem, 11.5vw, 3.2rem);
+    font-size: clamp(2.65rem, 11vw, 3.1rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.07;
   }
 
   .ghostframe-section__copy h2 {
-    font-size: clamp(3.05rem, 13vw, 3.55rem);
+    font-size: clamp(2.8rem, 12vw, 3.3rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.07;
   }
 
   .final-cta h2 {
-    font-size: clamp(3.5rem, 16vw, 4rem);
+    font-size: clamp(3.1rem, 13.5vw, 3.65rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.06;
   }
 
   .experience-feature .section-heading {
@@ -1581,6 +1596,12 @@ html[lang="zh"] h3 {
     gap: 58px;
   }
 
+  .site-footer__statement > p:last-child {
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.06;
+  }
+
   .site-footer__meta {
     justify-content: flex-start;
   }
@@ -1590,7 +1611,10 @@ html[lang="zh"] h3 {
   }
 
   .page-intro h1 {
-    font-size: clamp(3.6rem, 17vw, 5.8rem);
+    font-size: clamp(3.25rem, 14.5vw, 5.2rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.06;
   }
 
   .page-intro__copy {
@@ -1602,7 +1626,10 @@ html[lang="zh"] h3 {
   }
 
   .manifesto p {
-    font-size: clamp(2.5rem, 11vw, 4rem);
+    font-size: clamp(2.3rem, 9.8vw, 3.6rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
   }
 
   .practice-list article,
@@ -1623,6 +1650,33 @@ html[lang="zh"] h3 {
   .about-narrative h2,
   .contact-paths h2 {
     margin-bottom: 24px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.08;
+  }
+
+  .studio-lead__note > p:last-child {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.16;
+  }
+
+  html[lang="zh"] .section-heading h2,
+  html[lang="zh"] .experience-section h2,
+  html[lang="zh"] .portfolio-direction__copy h2,
+  html[lang="zh"] .contact-direct h2,
+  html[lang="zh"] .studio-preview__copy h2,
+  html[lang="zh"] .about-strip h2,
+  html[lang="zh"] .ghostframe-section__copy h2,
+  html[lang="zh"] .final-cta h2,
+  html[lang="zh"] .page-intro h1,
+  html[lang="zh"] .experience-card h3,
+  html[lang="zh"] .practice-list h2,
+  html[lang="zh"] .about-narrative h2,
+  html[lang="zh"] .contact-paths h2 {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.13;
   }
 
   .studio-lead {
