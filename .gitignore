@@ -36,6 +36,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local design references and private QA assets
+/artifacts/
+/docs/design/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

@@ -1,20 +1,20 @@
-import { notFound } from "next/navigation";
-import { NextIntlClientProvider } from "next-intl";
-import { ReactNode } from "react";
-import { setRequestLocale } from "next-intl/server";
 import { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
+import { notFound } from "next/navigation";
+import { ReactNode } from "react";
 import "../globals.css";
-import { Playfair_Display, Montserrat, Noto_Sans_SC, Orbitron } from "next/font/google";
+import { Montserrat, Noto_Sans_SC, Playfair_Display } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { isSiteLocale, locales, siteCopy } from "@/data/site";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["700"],
+  weight: ["600", "700", "800"],
   variable: "--font-playfair"
 });
 const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-montserrat"
 });
 const notoSansSC = Noto_Sans_SC({
@@ -23,27 +23,18 @@ const notoSansSC = Noto_Sans_SC({
   variable: "--font-noto-sans-sc"
 });
 
-// 新增音乐风格字体
-const orbitron = Orbitron({
-  subsets: ["latin"],
-  weight: ["400", "700", "900"],
-  variable: "--font-orbitron"
-});
-
 export function generateStaticParams() {
-  return [{ locale: "en" }, { locale: "zh" }];
+  return locales.map((locale) => ({ locale }));
 }
-
-const locales = ["en", "zh"];
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { params } = props;
   const { locale } = await params;
 
-  const messages = (await import(`../../messages/${locale}.json`)).default;
-
-  const title = messages.hero.title;
-  const description = messages.hero.subtitle;
+  if (!isSiteLocale(locale)) notFound();
+  const copy = siteCopy[locale];
+  const title = "The NeoBee Club";
+  const description = copy.home.aboutBody;
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://theneobee.club";
 
@@ -54,14 +45,12 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     },
     description,
     keywords: [
-      "music collective",
-      "electronic music",
-      "jazz",
-      "soulful music",
-      "Dublin music",
-      "DJ",
-      "producer",
-      "house music"
+      "Dublin creative collective",
+      "independent music Dublin",
+      "live sessions",
+      "visual production Dublin",
+      "cross-cultural events",
+      "NeoBee Studio"
     ],
     authors: [{ name: "The NeoBee Club" }],
     creator: "The NeoBee Club",
@@ -86,10 +75,10 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
       siteName: title,
       images: [
         {
-          url: "/logo.webp",
+          url: "/neobee-social-card.png",
           width: 1200,
           height: 630,
-          alt: `${title} Logo`
+          alt: "The NeoBee Club — Sound. Space. Culture."
         }
       ],
       locale: locale === "zh" ? "zh_CN" : "en_US",
@@ -99,7 +88,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
       card: "summary_large_image",
       title,
       description,
-      images: ["/logo.webp"]
+      images: ["/neobee-social-card.png"]
     },
     robots: {
       index: true,
@@ -122,34 +111,29 @@ export default async function LocaleLayout(props: { children: ReactNode; params:
   const { children, params } = props;
   const { locale } = await params;
 
+  if (!isSiteLocale(locale)) notFound();
   setRequestLocale(locale);
-  if (!locales.includes(locale)) notFound();
-  const messages = (await import(`../../messages/${locale}.json`)).default;
-
-  // Choose font based on locale
-  const bodyFontClass = locale === "zh" ? notoSansSC.className : montserrat.className;
 
   return (
     <html
       lang={locale}
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`scroll-smooth ${bodyFontClass} ${notoSansSC.variable} ${orbitron.variable}`}
+      className={`${montserrat.variable} ${playfair.variable} ${notoSansSC.variable}`}
       style={
         {
           "--font-playfair": playfair.style.fontFamily,
+          "--font-montserrat": montserrat.style.fontFamily,
           "--font-noto-sans-sc": notoSansSC.style.fontFamily,
-          "--font-orbitron": orbitron.style.fontFamily
         } as React.CSSProperties
       }
     >
       <head>
         <link rel="icon" href="/favicon.png" type="image/png" />
       </head>
-      <body className="bg-black text-white min-h-screen" suppressHydrationWarning>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
-          <Analytics />
-        </NextIntlClientProvider>
+      <body suppressHydrationWarning>
+        {children}
+        <Analytics />
       </body>
     </html>
   );

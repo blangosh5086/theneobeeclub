@@ -1,68 +1,31 @@
 import { MetadataRoute } from "next";
-import { works } from "@/data/works";
+import { experiences, sessions } from "@/data/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://theneobee.club";
 
-  // 根据最新视频上传日期确定works页面的lastModified
-  const latestVideoDate = works.reduce((latest, work) => {
-    const workDate = new Date(work.uploadDate || "2024-01-01");
-    return workDate > latest ? workDate : latest;
+  const latestContentDate = [
+    ...sessions.map((session) => session.uploadDate),
+    ...experiences.map((experience) => experience.dateISO)
+  ].reduce((latest, date) => {
+    const contentDate = new Date(date);
+    return contentDate > latest ? contentDate : latest;
   }, new Date("2024-01-01"));
 
-  // 主要页面
-  const mainPages: MetadataRoute.Sitemap = [
-    // 主页 - 英文
-    {
-      url: `${baseUrl}/en`,
-      lastModified: new Date("2025-01-15"), // 网站最近更新日期
-      changeFrequency: "weekly",
-      priority: 1
-    },
-    // 主页 - 中文
-    {
-      url: `${baseUrl}/zh`,
-      lastModified: new Date("2025-01-15"), // 网站最近更新日期
-      changeFrequency: "weekly",
-      priority: 1
-    },
-    // Works页面 - 英文
-    {
-      url: `${baseUrl}/en/works`,
-      lastModified: latestVideoDate,
-      changeFrequency: "monthly",
-      priority: 0.9 // 提高优先级，因为包含视频内容
-    },
-    // Works页面 - 中文
-    {
-      url: `${baseUrl}/zh/works`,
-      lastModified: latestVideoDate,
-      changeFrequency: "monthly",
-      priority: 0.9 // 提高优先级，因为包含视频内容
-    }
-  ];
+  const pages = ["", "/club", "/studio", "/archive", "/about", "/contact"];
 
-  // 为每个视频创建虚拟页面条目（用于SEO）
-  const videoPages: MetadataRoute.Sitemap = works.flatMap((work, index) => {
-    const videoDate = new Date(work.uploadDate || "2024-01-01");
-
-    return [
-      // 英文视频页面条目
-      {
-        url: `${baseUrl}/en/works#video-${index}`,
-        lastModified: videoDate,
-        changeFrequency: "yearly" as const,
-        priority: 0.7
-      },
-      // 中文视频页面条目
-      {
-        url: `${baseUrl}/zh/works#video-${index}`,
-        lastModified: videoDate,
-        changeFrequency: "yearly" as const,
-        priority: 0.7
+  return (["en", "zh"] as const).flatMap((locale) =>
+    pages.map((path) => ({
+      url: `${baseUrl}/${locale}${path}`,
+      lastModified: path === "/archive" ? latestContentDate : new Date("2026-07-22"),
+      changeFrequency: path === "" ? "weekly" as const : "monthly" as const,
+      priority: path === "" ? 1 : path === "/archive" ? 0.9 : 0.8,
+      alternates: {
+        languages: {
+          en: `${baseUrl}/en${path}`,
+          zh: `${baseUrl}/zh${path}`
+        }
       }
-    ];
-  });
-
-  return [...mainPages, ...videoPages];
+    }))
+  );
 }

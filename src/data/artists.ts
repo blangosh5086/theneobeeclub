@@ -37,16 +37,6 @@ export const artists: Artist[] = [
     social: {
       bilibili: "https://space.bilibili.com/327769785"
     }
-  },
-  {
-    id: "kewusir",
-    name: "Kewusir",
-    roleKey: "artists.kewusir_role",
-    imageUrl: "/kewusir.webp",
-    social: {
-      instagram: "https://www.instagram.com/kewusir",
-      xiaohongshu: "https://www.xiaohongshu.com/user/profile/5f146132000000000101d967"
-    }
   }
 ];
 
