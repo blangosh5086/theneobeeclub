@@ -7,6 +7,7 @@
 .stage {
   --hero-left: 34%;
   --hero-right: 66%;
+  --hero-center: 50%;
   position: relative;
   width: 100%;
   min-height: clamp(600px, 59vw, 790px);
@@ -141,6 +142,10 @@
 .lineStart { left: var(--hero-left); }
 .lineEnd { left: var(--hero-right); }
 
+.mobileHandle {
+  display: none;
+}
+
 @media (max-width: 1040px) {
   .stage {
     min-height: clamp(560px, 66vw, 680px);
@@ -163,12 +168,24 @@
     padding: 13px 14px;
   }
 
+  .desktopHint {
+    display: none;
+  }
+
+  .mobileHint {
+    display: block;
+  }
+
   .layer {
     inset: 72px 18px 28px;
   }
 
   .row {
     align-items: center;
+  }
+
+  .base {
+    color: rgba(239, 233, 220, 0.64);
   }
 
   .cjk {
@@ -187,12 +204,38 @@
     bottom: 14px;
   }
 
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .translation {
-    clip-path: inset(0 34% 0 34%);
+  .mobileHandle {
+    position: absolute;
+    z-index: 8;
+    left: var(--hero-center);
+    bottom: 5px;
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    color: var(--paper);
+    cursor: ew-resize;
+    touch-action: none;
+    transform: translateX(-50%);
   }
+
+  .mobileHandle::before {
+    content: "";
+    position: absolute;
+    width: 34px;
+    height: 22px;
+    border: 1px solid rgba(239, 233, 220, 0.68);
+    background: var(--ink);
+  }
+
+  .mobileHandle span {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-montserrat), sans-serif;
+    font-size: 0.72rem;
+    line-height: 1;
+  }
+
 }
 
 @media (hover: none), (pointer: coarse) {

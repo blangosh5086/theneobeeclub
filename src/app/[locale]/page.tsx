@@ -79,7 +79,13 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <div className="section-heading section-heading--split">
           <div>
             <p className="eyebrow">{copy.home.featureEyebrow}</p>
-            <h2>{copy.home.featureTitle}</h2>
+            <h2 className={locale === "zh" ? "feature-title-phrases" : undefined}>
+              {locale === "zh"
+                ? copy.home.featureTitle.split("，").map((phrase, index, phrases) => (
+                    <span key={`${phrase}-${index}`}>{phrase}{index < phrases.length - 1 ? "，" : ""}</span>
+                  ))
+                : copy.home.featureTitle}
+            </h2>
           </div>
           <p>{copy.home.featureBody}</p>
         </div>

@@ -1477,7 +1477,27 @@ html[lang="zh"] h3 {
   }
 
   .section-heading--split {
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr);
     gap: 22px;
+  }
+
+  .section-heading--split > * {
+    min-width: 0;
+  }
+
+  html[lang="zh"] .feature-section .section-heading h2 {
+    max-width: 100%;
+  }
+
+  .feature-title-phrases {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+
+  .feature-title-phrases > span {
+    white-space: nowrap;
   }
 
   .section-heading h2,
@@ -1488,7 +1508,7 @@ html[lang="zh"] h3 {
   }
 
   .feature-section .section-heading h2 {
-    font-size: clamp(3.05rem, 14vw, 3.65rem);
+    font-size: clamp(2.6rem, 14vw, 3.65rem);
   }
 
   .studio-preview__copy h2,
