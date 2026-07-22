@@ -2,9 +2,15 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import ExperienceCard from "@/components/site/ExperienceCard";
 import PageIntro from "@/components/site/PageIntro";
+import PageSeo from "@/components/site/PageSeo";
 import SessionCard from "@/components/site/SessionCard";
 import SiteShell from "@/components/site/SiteShell";
 import { experiences, isSiteLocale, sessions, siteCopy, socialLinks } from "@/data/site";
+import { generatePageMetadata } from "@/lib/seo";
+
+export function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  return generatePageMetadata(params, "archive");
+}
 
 export default async function ArchivePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -14,6 +20,7 @@ export default async function ArchivePage({ params }: { params: Promise<{ locale
 
   return (
     <SiteShell locale={locale}>
+      <PageSeo locale={locale} page="archive" />
       <PageIntro eyebrow={copy.archive.eyebrow} title={copy.archive.title} intro={copy.archive.intro} />
       <section className="archive-section section-pad">
         <div className="archive-label"><span>01</span><h2>{copy.archive.sessions}</h2></div>

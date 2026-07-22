@@ -2,8 +2,14 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import PageIntro from "@/components/site/PageIntro";
+import PageSeo from "@/components/site/PageSeo";
 import SiteShell from "@/components/site/SiteShell";
 import { founders, isSiteLocale, siteCopy } from "@/data/site";
+import { generatePageMetadata } from "@/lib/seo";
+
+export function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  return generatePageMetadata(params, "about");
+}
 
 export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -13,6 +19,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
 
   return (
     <SiteShell locale={locale}>
+      <PageSeo locale={locale} page="about" />
       <PageIntro eyebrow={copy.about.eyebrow} title={copy.about.title} intro={copy.about.intro} />
       <section className="about-narrative section-pad">
         <article><span>01</span><h2>{copy.about.originTitle}</h2><p>{copy.about.originBody}</p></article>

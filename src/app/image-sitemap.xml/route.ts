@@ -1,27 +1,39 @@
 import { experiences, founders, sessions } from "@/data/site";
 
+const xmlEntities: Record<string, string> = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  "\"": "&quot;",
+  "'": "&apos;"
+};
+
+function escapeXml(value: string) {
+  return value.replace(/[&<>"']/g, (character) => xmlEntities[character]);
+}
+
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://theneobee.club";
 
   const sessionImages = sessions.map((session) => `
     <image:image>
       <image:loc>${baseUrl}${session.image}</image:loc>
-      <image:title>${session.title}</image:title>
+      <image:title>${escapeXml(session.title)}</image:title>
       <image:caption>The NeoBee Club Session ${session.number}, recorded in Dublin.</image:caption>
     </image:image>`).join("");
 
   const experienceImages = experiences.map((experience) => `
     <image:image>
       <image:loc>${baseUrl}${experience.image}</image:loc>
-      <image:title>${experience.title.en}</image:title>
-      <image:caption>The NeoBee Club experience at ${experience.venue}, Dublin.</image:caption>
+      <image:title>${escapeXml(experience.title.en)}</image:title>
+      <image:caption>The NeoBee Club experience at ${escapeXml(experience.venue)}, Dublin.</image:caption>
     </image:image>`).join("");
 
   const founderImages = founders.map((founder) => `
     <image:image>
       <image:loc>${baseUrl}${founder.image}</image:loc>
-      <image:title>${founder.name} — The NeoBee Club</image:title>
-      <image:caption>${founder.role.en} at The NeoBee Club.</image:caption>
+      <image:title>${escapeXml(founder.name)} — The NeoBee Club</image:title>
+      <image:caption>${escapeXml(founder.role.en)} at The NeoBee Club.</image:caption>
     </image:image>`).join("");
 
   const imageSitemap = `<?xml version="1.0" encoding="UTF-8"?>

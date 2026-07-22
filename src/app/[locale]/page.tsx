@@ -7,52 +7,60 @@ import HomeHeroMotion from "@/components/site/HomeHeroMotion";
 import SessionCard from "@/components/site/SessionCard";
 import SiteShell from "@/components/site/SiteShell";
 import { experiences, founders, isSiteLocale, sessions, siteCopy, socialLinks } from "@/data/site";
+import { generatePageMetadata } from "@/lib/seo";
+
+export function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  return generatePageMetadata(params, "home");
+}
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (!isSiteLocale(locale)) notFound();
   setRequestLocale(locale);
   const copy = siteCopy[locale];
+  const featuredExperience = experiences[0];
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://theneobee.club";
+  const organizationId = `${baseUrl}/#organization`;
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "The NeoBee Club",
-    description: copy.home.aboutBody,
-    foundingLocation: { "@type": "Place", name: "Dublin", addressCountry: "IE" },
-    url: `https://theneobee.club/${locale}`,
-    logo: "https://theneobee.club/logo.webp",
-    email: "theneobeeclub@gmail.com",
-    founder: founders.map((founder) => ({
-      "@type": "Person",
-      name: founder.name,
-      sameAs: founder.socials.map((social) => social.href)
-    })),
-    sameAs: [socialLinks.instagram, socialLinks.youtube]
-  };
-  const featuredExperience = experiences[0];
-  const eventStructuredData = {
-    "@context": "https://schema.org",
-    "@type": "Event",
-    name: featuredExperience.title[locale],
-    description: featuredExperience.description[locale],
-    startDate: "2026-06-28T18:00:00+01:00",
-    endDate: "2026-06-28T19:00:00+01:00",
-    eventStatus: "https://schema.org/EventScheduled",
-    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-    image: `https://theneobee.club${featuredExperience.image}`,
-    location: {
-      "@type": "Place",
-      name: featuredExperience.venue,
-      address: featuredExperience.address
-    },
-    url: featuredExperience.href
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": organizationId,
+        name: "The NeoBee Club",
+        alternateName: "NeoBee",
+        description: copy.home.aboutBody,
+        foundingDate: "2024",
+        foundingLocation: { "@type": "Place", name: "Dublin", addressCountry: "IE" },
+        address: { "@type": "PostalAddress", addressLocality: "Dublin", addressCountry: "IE" },
+        url: baseUrl,
+        logo: {
+          "@type": "ImageObject",
+          url: `${baseUrl}/logo.webp`
+        },
+        email: "theneobeeclub@gmail.com",
+        founder: founders.map((founder) => ({
+          "@type": "Person",
+          name: founder.name,
+          sameAs: founder.socials.map((social) => social.href)
+        })),
+        sameAs: [socialLinks.instagram, socialLinks.youtube]
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${baseUrl}/#website`,
+        url: baseUrl,
+        name: "The NeoBee Club",
+        inLanguage: ["en", "zh"],
+        publisher: { "@id": organizationId }
+      }
+    ]
   };
 
   return (
     <SiteShell locale={locale}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(eventStructuredData) }} />
 
       <section className="home-hero section-pad">
         <p className="home-hero__eyebrow eyebrow">{copy.home.eyebrow}</p>
@@ -99,7 +107,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         </div>
         <div className="branch-grid">
           <Link href={`/${locale}/club`} className="branch-card branch-card--dark">
-            <div className="branch-card__image"><Image className="branch-card__portrait branch-card__portrait--hao" src="/haosc.webp" alt="Hao — music and artistic direction at NeoBee Club" fill sizes="(max-width: 760px) 100vw, 50vw" /></div>
+            <div className="branch-card__image"><Image className="branch-card__portrait branch-card__portrait--hao" src="/haosc.webp" alt={locale === "zh" ? "Hao — NeoBee Club 音乐与艺术方向" : "Hao — music and artistic direction at NeoBee Club"} fill sizes="(max-width: 760px) 100vw, 50vw" /></div>
             <div className="branch-card__body">
               <span className="branch-card__number">01</span>
               <h3>{copy.home.clubTitle}</h3>
@@ -108,7 +116,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             </div>
           </Link>
           <Link href={`/${locale}/studio`} className="branch-card branch-card--accent">
-            <div className="branch-card__image"><Image className="branch-card__portrait branch-card__portrait--leo" src="/leo.webp" alt="Leo — visual and creative production at NeoBee Studio" fill sizes="(max-width: 760px) 100vw, 50vw" /></div>
+            <div className="branch-card__image"><Image className="branch-card__portrait branch-card__portrait--leo" src="/leo.webp" alt={locale === "zh" ? "Leo — NeoBee Studio 视觉与创意制作" : "Leo — visual and creative production at NeoBee Studio"} fill sizes="(max-width: 760px) 100vw, 50vw" /></div>
             <div className="branch-card__body">
               <span className="branch-card__number">02</span>
               <h3>{copy.home.studioTitle}</h3>
@@ -151,8 +159,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <Link className="button button--line" href={`/${locale}/studio`}>{copy.home.studioCta} <span>→</span></Link>
         </div>
         <div className="studio-preview__images">
-          <div className="studio-shot studio-shot--one"><Image src="/yunnan-menu-sp404-set.webp" alt="NeoBee event documentation in Dublin" fill sizes="(max-width: 760px) 70vw, 30vw" /></div>
-          <div className="studio-shot studio-shot--two"><Image src="/session-jazzy-house.jpg" alt="NeoBee session film still" fill sizes="(max-width: 760px) 55vw, 24vw" /></div>
+          <div className="studio-shot studio-shot--one"><Image src="/yunnan-menu-sp404-set.webp" alt={locale === "zh" ? "NeoBee 都柏林活动现场记录" : "NeoBee event documentation in Dublin"} fill sizes="(max-width: 760px) 70vw, 30vw" /></div>
+          <div className="studio-shot studio-shot--two"><Image src="/session-jazzy-house.jpg" alt={locale === "zh" ? "NeoBee 音乐 Session 现场画面" : "NeoBee music session film still"} fill sizes="(max-width: 760px) 55vw, 24vw" /></div>
           <span>IMAGE / MOTION / SPACE</span>
         </div>
       </section>

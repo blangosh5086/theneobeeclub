@@ -1,8 +1,14 @@
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import PageIntro from "@/components/site/PageIntro";
+import PageSeo from "@/components/site/PageSeo";
 import SiteShell from "@/components/site/SiteShell";
 import { isSiteLocale, siteCopy, socialLinks } from "@/data/site";
+import { generatePageMetadata } from "@/lib/seo";
+
+export function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  return generatePageMetadata(params, "contact");
+}
 
 export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -12,6 +18,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
   return (
     <SiteShell locale={locale}>
+      <PageSeo locale={locale} page="contact" />
       <PageIntro eyebrow={copy.contact.eyebrow} title={copy.contact.title} intro={copy.contact.intro} />
       <section className="contact-paths section-pad">
         <article><span>01</span><h2>{copy.contact.clubTitle}</h2><p>{copy.contact.clubBody}</p></article>

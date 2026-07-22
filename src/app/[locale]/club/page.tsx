@@ -3,9 +3,15 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import ExperienceCard from "@/components/site/ExperienceCard";
 import PageIntro from "@/components/site/PageIntro";
+import PageSeo from "@/components/site/PageSeo";
 import SessionCard from "@/components/site/SessionCard";
 import SiteShell from "@/components/site/SiteShell";
 import { experiences, isSiteLocale, sessions, siteCopy } from "@/data/site";
+import { generatePageMetadata } from "@/lib/seo";
+
+export function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  return generatePageMetadata(params, "club");
+}
 
 export default async function ClubPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -22,6 +28,7 @@ export default async function ClubPage({ params }: { params: Promise<{ locale: s
 
   return (
     <SiteShell locale={locale}>
+      <PageSeo locale={locale} page="club" />
       <PageIntro eyebrow={copy.club.eyebrow} title={copy.club.title} intro={copy.club.intro} />
       <section className="manifesto section-pad"><p>{copy.club.statement}</p></section>
       <section className="page-sessions section-pad">

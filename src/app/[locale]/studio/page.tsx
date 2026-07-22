@@ -3,8 +3,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import PageIntro from "@/components/site/PageIntro";
+import PageSeo from "@/components/site/PageSeo";
 import SiteShell from "@/components/site/SiteShell";
 import { isSiteLocale, sessions, siteCopy } from "@/data/site";
+import { generatePageMetadata } from "@/lib/seo";
+
+export function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  return generatePageMetadata(params, "studio");
+}
 
 export default async function StudioPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -19,9 +25,10 @@ export default async function StudioPage({ params }: { params: Promise<{ locale:
 
   return (
     <SiteShell locale={locale}>
+      <PageSeo locale={locale} page="studio" />
       <PageIntro eyebrow={copy.studio.eyebrow} title={copy.studio.title} intro={copy.studio.intro} />
       <section className="studio-lead section-pad">
-        <div className="studio-lead__image"><Image src="/session-funky-house.jpg" alt="NeoBee live session documentation" fill priority sizes="(max-width: 760px) 100vw, 48vw" /></div>
+        <div className="studio-lead__image"><Image src="/session-funky-house.jpg" alt={locale === "zh" ? "NeoBee 音乐 Session 现场记录" : "NeoBee live music session documentation"} fill priority sizes="(max-width: 760px) 100vw, 48vw" /></div>
         <div className="studio-lead__note"><p className="eyebrow">Studio / Dublin</p><p>{copy.studio.note}</p></div>
       </section>
       <section className="services-section section-pad">
@@ -37,7 +44,7 @@ export default async function StudioPage({ params }: { params: Promise<{ locale:
         <div className="portfolio-grid">
           {sessions.map((session) => (
             <a href={session.youtube} target="_blank" rel="noreferrer" key={session.id} className="portfolio-image">
-              <Image src={session.image} alt={`${session.title} film still`} fill sizes="(max-width: 760px) 100vw, 50vw" />
+              <Image src={session.image} alt={locale === "zh" ? `${session.title} — Session 现场画面` : `${session.title} film still`} fill sizes="(max-width: 760px) 100vw, 50vw" />
               <span>{session.title} ↗</span>
             </a>
           ))}

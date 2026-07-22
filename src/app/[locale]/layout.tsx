@@ -44,14 +44,6 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
       template: `%s | ${title}`
     },
     description,
-    keywords: [
-      "Dublin creative collective",
-      "independent music Dublin",
-      "live sessions",
-      "visual production Dublin",
-      "cross-cultural events",
-      "NeoBee Studio"
-    ],
     authors: [{ name: "The NeoBee Club" }],
     creator: "The NeoBee Club",
     publisher: "The NeoBee Club",
@@ -61,35 +53,6 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
       telephone: false
     },
     metadataBase: new URL(baseUrl),
-    alternates: {
-      canonical: `/${locale}`,
-      languages: {
-        en: "/en",
-        zh: "/zh"
-      }
-    },
-    openGraph: {
-      title,
-      description,
-      url: `${baseUrl}/${locale}`,
-      siteName: title,
-      images: [
-        {
-          url: "/neobee-social-card.png",
-          width: 1200,
-          height: 630,
-          alt: "The NeoBee Club — Sound. Space. Culture."
-        }
-      ],
-      locale: locale === "zh" ? "zh_CN" : "en_US",
-      type: "website"
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: ["/neobee-social-card.png"]
-    },
     robots: {
       index: true,
       follow: true,
