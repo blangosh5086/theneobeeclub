@@ -26,10 +26,11 @@ export default function HomeHeroMotion({ locale, title }: { locale: SiteLocale; 
   const stage = useRef<HTMLButtonElement>(null);
   const interactionHint = useRef<HTMLSpanElement>(null);
   const scanTimeline = useRef<gsap.core.Timeline | null>(null);
+  const introDemo = useRef<gsap.core.Tween | null>(null);
   const scanning = useRef(false);
   const hintDismissed = useRef(false);
   const dragState = useRef<{ pointerId: number; startX: number; moved: boolean } | null>(null);
-  const suppressNextClick = useRef(false);
+  const suppressClickUntil = useRef(0);
   const initialPosition = locale === "zh" ? { left: 34, right: 66 } : { left: 16, right: 44 };
   const lastPointer = useRef(initialPosition);
   const translationLocale: SiteLocale = locale === "zh" ? "en" : "zh";
@@ -76,6 +77,10 @@ export default function HomeHeroMotion({ locale, title }: { locale: SiteLocale; 
   }, { scope });
 
   const dismissHint = contextSafe(() => {
+    introDemo.current?.kill();
+    introDemo.current = null;
+    window.sessionStorage.setItem("neobee-hero-demo-seen", "true");
+
     if (!interactionHint.current || hintDismissed.current) return;
     hintDismissed.current = true;
     window.sessionStorage.setItem("neobee-hero-hint-seen", "true");
@@ -163,7 +168,7 @@ export default function HomeHeroMotion({ locale, title }: { locale: SiteLocale; 
     scanTimeline.current?.kill();
     scanTimeline.current = null;
     scanning.current = false;
-    suppressNextClick.current = false;
+    suppressClickUntil.current = 0;
     dragState.current = { pointerId, startX: clientX, moved: false };
   });
 
@@ -177,13 +182,13 @@ export default function HomeHeroMotion({ locale, title }: { locale: SiteLocale; 
   const endDrag = contextSafe((pointerId: number) => {
     const currentDrag = dragState.current;
     if (!currentDrag || currentDrag.pointerId !== pointerId) return;
-    suppressNextClick.current = currentDrag.moved;
+    suppressClickUntil.current = currentDrag.moved ? performance.now() + 500 : 0;
     dragState.current = null;
   });
 
-  const play = contextSafe(() => {
+  const play = contextSafe((dismissInteractionHint = true) => {
     if (!stage.current) return;
-    dismissHint();
+    if (dismissInteractionHint) dismissHint();
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const desktopPointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     const desktopWidth = DESKTOP_SCAN_WIDTH;
@@ -247,9 +252,26 @@ export default function HomeHeroMotion({ locale, title }: { locale: SiteLocale; 
       .to("[data-hero-culture-print]", { autoAlpha: 0, x: 0, y: 0, duration: 0.46, ease: "power3.out" }, "scan+=1.2");
   });
 
+  useGSAP(() => {
+    if (!stage.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.sessionStorage.getItem("neobee-hero-demo-seen") === "true") return;
+
+    introDemo.current = gsap.delayedCall(0.9, () => {
+      introDemo.current = null;
+      window.sessionStorage.setItem("neobee-hero-demo-seen", "true");
+      play(false);
+    });
+
+    return () => {
+      introDemo.current?.kill();
+      introDemo.current = null;
+    };
+  }, { scope });
+
   const interactionLabel = locale === "zh"
-    ? "互动双语标题：声音。空间。文化。移动指针或拖动控制柄探索翻译，点击或轻触扫描。"
-    : "Interactive bilingual title: Sound. Space. Culture. Move the pointer or drag the handle to explore the translation, then click or tap to scan.";
+    ? "互动双语标题：声音。空间。文化。移动指针或拖动扫描线探索翻译，点击或轻触扫描。"
+    : "Interactive bilingual title: Sound. Space. Culture. Move the pointer or drag the scanner to explore the translation, then click or tap to scan.";
 
   return (
     <div className={styles.root} ref={scope}>
@@ -264,45 +286,46 @@ export default function HomeHeroMotion({ locale, title }: { locale: SiteLocale; 
           "--hero-center": `${centerOf(initialPosition)}%`
         } as CSSProperties}
         aria-label={interactionLabel}
-        onPointerEnter={(event) => { if (event.pointerType === "mouse") activate(); }}
+        onPointerEnter={() => {
+          if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) activate();
+        }}
         onPointerDown={(event) => {
-          if (event.pointerType === "mouse") return;
           const target = event.target as HTMLElement;
-          if (!target.closest("[data-hero-handle]")) return;
+          const desktopPointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+          if (!desktopPointer && !target.closest("[data-hero-handle]")) return;
           event.preventDefault();
           event.currentTarget.setPointerCapture(event.pointerId);
           beginDrag(event.pointerId, event.clientX);
         }}
         onPointerMove={(event) => {
-          if (event.pointerType === "mouse") move(event.clientX);
-          else if (dragState.current?.pointerId === event.pointerId) {
+          if (dragState.current?.pointerId === event.pointerId) {
             event.preventDefault();
             drag(event.pointerId, event.clientX);
+          } else if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+            move(event.clientX);
           }
         }}
         onPointerUp={(event) => {
-          if (event.pointerType === "mouse") return;
           endDrag(event.pointerId);
           if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
         }}
         onPointerCancel={(event) => {
-          if (event.pointerType === "mouse") return;
-          suppressNextClick.current = false;
+          suppressClickUntil.current = dragState.current?.moved ? performance.now() + 500 : 0;
           dragState.current = null;
+          if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
         }}
-        onPointerLeave={(event) => { if (event.pointerType === "mouse") settle(); }}
+        onPointerLeave={() => {
+          if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !dragState.current) settle();
+        }}
         onFocus={activate}
         onBlur={settle}
         onClick={() => {
-          if (suppressNextClick.current) {
-            suppressNextClick.current = false;
-            return;
-          }
+          if (performance.now() < suppressClickUntil.current) return;
           play();
         }}
       >
         <span className={styles.meta} ref={interactionHint} aria-hidden="true">
-          <span className={styles.desktopHint}>{locale === "zh" ? "移动 / 点击" : "MOVE / CLICK"}</span>
+          <span className={styles.desktopHint}>{locale === "zh" ? "移动 / 拖动 / 点击" : "MOVE / DRAG / CLICK"}</span>
           <span className={styles.mobileHint}>{locale === "zh" ? "拖动 / 轻触" : "DRAG / TAP"}</span>
         </span>
 

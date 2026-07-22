@@ -17,8 +17,12 @@
   background: var(--ink);
   color: var(--paper);
   text-align: left;
-  cursor: crosshair;
+  cursor: ew-resize;
   overflow: hidden;
+}
+
+.stage:active {
+  cursor: grabbing;
 }
 
 .meta {
