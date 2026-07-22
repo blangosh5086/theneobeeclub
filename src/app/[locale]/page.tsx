@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import ExperienceCard from "@/components/site/ExperienceCard";
 import HomeHeroMotion from "@/components/site/HomeHeroMotion";
+import HomePageIndex from "@/components/site/HomePageIndex";
 import SessionCard from "@/components/site/SessionCard";
 import SiteShell from "@/components/site/SiteShell";
 import { experiences, founders, isSiteLocale, sessions, siteCopy, socialLinks } from "@/data/site";
@@ -83,24 +84,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <div className="home-hero__index" aria-hidden="true">NB—01</div>
       </section>
 
-      <section className="feature-section section-pad">
-        <div className="section-heading section-heading--split">
-          <div>
-            <p className="eyebrow">{copy.home.featureEyebrow}</p>
-            <h2 className={locale === "zh" ? "feature-title-phrases" : undefined}>
-              {locale === "zh"
-                ? copy.home.featureTitle.split("，").map((phrase, index, phrases) => (
-                    <span key={`${phrase}-${index}`}>{phrase}{index < phrases.length - 1 ? "，" : ""}</span>
-                  ))
-                : copy.home.featureTitle}
-            </h2>
-          </div>
-          <p>{copy.home.featureBody}</p>
-        </div>
-        <SessionCard session={sessions[0]} locale={locale} featured />
-      </section>
+      <HomePageIndex locale={locale} />
 
-      <section className="branches-section section-pad">
+      <section className="branches-section section-pad" id="practices">
         <div className="section-heading">
           <p className="eyebrow">{copy.home.branchesEyebrow}</p>
           <h2>{copy.home.branchesTitle}</h2>
@@ -127,20 +113,35 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         </div>
       </section>
 
-      <section className="sessions-section section-pad">
-        <div className="section-heading section-heading--split">
+      <section className="sessions-section sessions-section--home section-pad" id="sessions">
+        <div className="section-heading section-heading--split home-feature-heading">
           <div>
+            <p className="eyebrow">{copy.home.featureEyebrow}</p>
+            <h2 className={locale === "zh" ? "feature-title-phrases" : undefined}>
+              {locale === "zh"
+                ? copy.home.featureTitle.split("，").map((phrase, index, phrases) => (
+                    <span key={`${phrase}-${index}`}>{phrase}{index < phrases.length - 1 ? "，" : ""}</span>
+                  ))
+                : copy.home.featureTitle}
+            </h2>
+          </div>
+          <p>{copy.home.featureBody}</p>
+        </div>
+        <SessionCard session={sessions[0]} locale={locale} featured />
+
+        <div className="home-session-archive">
+          <div className="home-session-archive__intro">
             <p className="eyebrow">{copy.home.sessionsEyebrow}</p>
             <h2>{copy.home.sessionsTitle}</h2>
+            <Link className="text-link" href={`/${locale}/archive`}>{copy.common.viewAll} →</Link>
           </div>
-          <Link className="text-link" href={`/${locale}/archive`}>{copy.common.viewAll} →</Link>
-        </div>
-        <div className="session-grid">
-          {sessions.map((session) => <SessionCard key={session.id} session={session} locale={locale} />)}
+          <div className="session-grid session-grid--home">
+            {sessions.slice(1).map((session) => <SessionCard key={session.id} session={session} locale={locale} />)}
+          </div>
         </div>
       </section>
 
-      <section className="experience-feature section-pad">
+      <section className="experience-feature section-pad" id="experiences">
         <div className="section-heading section-heading--split">
           <div>
           <p className="eyebrow">{copy.home.experienceEyebrow}</p>
@@ -148,10 +149,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           </div>
           <p>{copy.home.experienceBody}</p>
         </div>
-        <ExperienceCard experience={featuredExperience} locale={locale} />
+        <ExperienceCard experience={featuredExperience} locale={locale} compact />
       </section>
 
-      <section className="studio-preview section-pad">
+      <section className="studio-preview section-pad" id="studio">
         <div className="studio-preview__copy">
           <p className="eyebrow">{copy.home.studioEyebrow}</p>
           <h2>{copy.home.studioPreviewTitle}</h2>
@@ -165,7 +166,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         </div>
       </section>
 
-      <section className="ghostframe-section section-pad">
+      <section className="ghostframe-section section-pad" id="experiment">
         <div className="ghostframe-visual" aria-hidden="true">
           <div className="ghostframe-visual__frame ghostframe-visual__frame--a"></div>
           <div className="ghostframe-visual__frame ghostframe-visual__frame--b"></div>
@@ -182,22 +183,19 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         </div>
       </section>
 
-      <section className="about-strip section-pad">
-        <div>
+      <section className="about-contact" id="about">
+        <div className="about-contact__about">
           <p className="eyebrow">{copy.home.aboutEyebrow}</p>
           <h2>{copy.home.aboutTitle}</h2>
-        </div>
-        <div>
           <p>{copy.home.aboutBody}</p>
           <Link className="text-link" href={`/${locale}/about`}>{copy.nav.about} →</Link>
         </div>
-      </section>
-
-      <section className="final-cta section-pad">
-        <p className="eyebrow">{copy.common.dublin}</p>
-        <h2>{copy.home.finalTitle}</h2>
-        <p>{copy.home.finalBody}</p>
-        <Link className="button button--solid" href={`/${locale}/contact`}>{copy.nav.contact} <span>→</span></Link>
+        <div className="about-contact__cta">
+          <p className="eyebrow">{copy.common.dublin}</p>
+          <h2>{copy.home.finalTitle}</h2>
+          <p>{copy.home.finalBody}</p>
+          <Link className="button button--solid" href={`/${locale}/contact`}>{copy.nav.contact} <span>→</span></Link>
+        </div>
       </section>
     </SiteShell>
   );

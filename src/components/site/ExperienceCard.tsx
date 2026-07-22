@@ -3,11 +3,11 @@ import { experiences, SiteLocale, siteCopy } from "@/data/site";
 
 type Experience = (typeof experiences)[number];
 
-export default function ExperienceCard({ experience, locale }: { experience: Experience; locale: SiteLocale }) {
+export default function ExperienceCard({ experience, locale, compact = false }: { experience: Experience; locale: SiteLocale; compact?: boolean }) {
   const copy = siteCopy[locale];
 
   return (
-    <article className="experience-card" id={experience.id}>
+    <article className={`experience-card${compact ? " experience-card--compact" : ""}`} id={experience.id}>
       <a className="experience-card__image" href={experience.href} target="_blank" rel="noreferrer">
         <Image
           src={experience.image}
