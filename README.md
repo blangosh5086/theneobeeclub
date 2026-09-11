@@ -1,437 +1,80 @@
-# The NeoBee Club - Dublin Music Collective 🎵
+# The NeoBee Club
 
-[中文版本](#中文版本) | [English Version](#english-version)
+The bilingual website for NeoBee Club and NeoBee Studio: music sessions, live experiences, photography, film and visual experiments. Next.js App Router, React, TypeScript, next-intl and a GSAP bilingual scanning hero.
 
----
+## Start here
 
-## English Version
+Before changing content or design, read [AGENTS.md](AGENTS.md), the [brand system](docs/maintenance/brand-system.md), the [decision register](docs/maintenance/decision-register.md) and the [update playbook](docs/maintenance/update-playbook.md). They separate owner-confirmed direction, the current visual baseline and maintenance inferences, not just coding conventions.
 
-### 🎯 About The NeoBee Club
+NeoBee is music-led and cross-cultural. Dublin is its starting point, not its limit. Individual venue requirements do not become brand-wide music restrictions, and a restrained website does not rule out intense or experimental music. Professional presentation should retain accurate personal credits without inventing scale or business achievements.
 
-**The NeoBee Club** is a Dublin-based collective of music lovers exploring soulful, jazzy, and electronic sounds. We're passionate about sharing the joy of music through DJ sets, live performances, and creative collaborations.
+Use Node **22.18+** (Node 22 in CI) and npm:
 
-This repository contains the source code for our official website, built with modern web technologies to showcase our artists, music, and upcoming events.
-
-### 🌟 Features
-
-#### 🎨 **Interactive Visual Experience**
-
-- **Three.js Metaballs Animation**: Stunning WebGL-based organic blob animations that respond to mouse movement (inspired by [Codrops tutorial](https://tympanus.net/codrops/2025/06/09/how-to-create-interactive-droplet-like-metaballs-with-three-js-and-glsl/))
-- **Smooth Animations**: Framer Motion powered transitions and micro-interactions
-- **Responsive Design**: Perfect experience across all devices and screen sizes
-
-#### 🌍 **Internationalization**
-
-- **Bilingual Support**: Full English and Chinese (中文) language support
-- **SEO Optimized**: Multi-language meta tags and structured data
-- **Automatic Language Detection**: Smart routing based on user preferences
-
-#### 🎵 **Music Showcase**
-
-- **Artists Section**: Dynamic artist profiles with social media integration
-- **Music Collection**: Embedded music videos and audio content
-- **Works Gallery**: Complete collection of our musical releases
-
-#### ⚡ **Performance & SEO**
-
-- **Next.js 15**: Latest React framework with App Router
-- **Server-Side Rendering**: Optimal loading speeds and SEO
-- **Vercel Analytics**: Real-time performance monitoring
-- **Google Search Console**: Comprehensive SEO optimization
-
-#### 🎛️ **Customizable Animations**
-
-The metaballs effect includes easily adjustable parameters:
-
-- Animation speed controls
-- Mouse interaction sensitivity
-- Visual effects intensity
-- Color scheme modifications
-
-### 🛠️ Tech Stack
-
-#### **Frontend Framework**
-
-- **Next.js 15** - React framework with App Router
-- **React 19** - Latest React with concurrent features
-- **TypeScript** - Type-safe development
-
-#### **Styling & Animations**
-
-- **Tailwind CSS 4** - Utility-first CSS framework
-- **Framer Motion** - Advanced animation library
-- **Custom CSS Animations** - Gradient animations and effects
-
-#### **3D Graphics**
-
-- **Three.js** - WebGL 3D graphics library
-- **Custom Shaders** - GLSL fragment and vertex shaders
-- **Interactive Metaballs** - Real-time fluid simulation
-
-#### **Internationalization**
-
-- **next-intl** - Type-safe internationalization
-- **JSON Message Files** - Structured translation management
-
-#### **Analytics & SEO**
-
-- **Vercel Analytics** - Performance monitoring
-- **Structured Data** - Rich snippets and schema markup
-- **Sitemap & Robots** - Search engine optimization
-
-#### **Development Tools**
-
-- **ESLint** - Code linting and formatting
-- **TypeScript** - Static type checking
-- **Turbopack** - Fast development bundler
-
-### 🚀 Quick Start
-
-#### Prerequisites
-
-- Node.js 18.0 or later
-- npm, yarn, pnpm, or bun
-
-#### Installation
-
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/haoranzhang929/theneobeeclub.git
-   cd theneobeeclub
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   npm install
-   # or
-   yarn install
-   # or
-   pnpm install
-   ```
-
-3. **Set up environment variables**
-
-   ```bash
-   cp .env.example .env.local
-   ```
-
-   Edit `.env.local` with your configuration:
-
-   ```env
-   NEXT_PUBLIC_SITE_URL=https://theneobee.club
-   NEXT_PUBLIC_GOOGLE_VERIFICATION=your_google_verification_code
-   ```
-
-4. **Run the development server**
-
-```bash
+```sh
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-5. **Open your browser**
-   Visit [http://localhost:3000](http://localhost:3000) to see the website.
+Reuse an existing dev server if one is running. The locale routes are `/en` and `/zh`; each has Club, Studio, Archive, About and Contact pages. Deployment remains GitHub `main` → Vercel. Do not publish ordinary local updates without a publishing request.
 
-### 📁 Project Structure
+Optional local configuration (never commit `.env.local`):
 
-```
-src/
-├── app/                    # Next.js App Router
-│   ├── [locale]/          # Internationalized routes
-│   ├── globals.css        # Global styles and animations
-│   └── layout.tsx         # Root layout
-├── components/            # React components
-│   ├── MetaballsEffect.tsx # Three.js animation
-│   ├── HeroSection.tsx    # Landing section
-│   ├── ArtistsSection.tsx # Artist showcase
-│   └── ...                # Other UI components
-├── data/                  # Static data and content
-│   ├── artists.ts         # Artist information
-│   └── works.ts           # Music works data
-├── messages/              # Internationalization
-│   ├── en.json           # English translations
-│   └── zh.json           # Chinese translations
-└── lib/                   # Utility functions
-    └── animations.ts      # Framer Motion variants
+```dotenv
+NEXT_PUBLIC_SITE_URL=https://theneobee.club
+NEXT_PUBLIC_GOOGLE_VERIFICATION=your_verification_value
 ```
 
-### 🎛️ Customizing Animations
+## Current content model
 
-The Three.js metaballs effect includes adjustable parameters marked with 🎛️ emojis:
+- `src/data/site.ts`: bilingual public copy, Sessions, Experiences, founders and social links.
+- `homeFeature` on a Session or Experience: its bilingual homepage title and supporting copy.
+- `editorialSelection`: explicit homepage and Studio selections. Adding a record does not automatically expand the homepage or replace the feature.
+- `src/app/[locale]/` and `src/components/site/`: current pages and shared components.
+- `src/app/globals.css` and `src/app/[locale]/layout.tsx`: visual system and fonts.
+- `public/`: stable optimized images. Add source context to `harness/content-sources.json` for new work.
 
-**Animation Speed:**
+Source records declare the evidence kind, public status, work scope, evidence date, source links and open review questions. The content tests check these declarations, not their truth, freshness, live link availability or publishing permission. `approved-baseline` is for existing accepted records, not a shortcut for new work. Public availability alone does not authorize a website addition or establish its Session number. See the playbook for the field definitions and explicitly authorized exceptions.
 
-```glsl
-// Overall animation speed (0.1 = very slow → 1.5 = very fast)
-float t = u_time * 0.2;
+Legacy components/data remain in the repository but are not the current content editing workflow. Do not follow old `artists.ts` / `works.ts` instructions for the redesigned pages.
+
+## Maintenance harness
+
+Install the test browsers once after `npm ci`:
+
+```sh
+npx playwright install chromium webkit
+npm run verify
+npm run report
 ```
 
-**Mouse Following:**
+On Linux use `npx playwright install --with-deps chromium webkit`.
 
-```javascript
-// Mouse following speed (0.01 = slow → 0.3 = fast)
-const lerpFactor = 0.01;
-```
+| Command | Purpose |
+| --- | --- |
+| `npm run check` | Bilingual content, curated references, assets, sources, lint and types |
+| `npm run verify` | All checks, clean production build, browser contracts and screenshot evidence |
+| `npm run test:content` | Content checks only |
+| `npm run test:browser` | Clean production build and browser checks only |
+| `npm run report` | Open the generated HTML report |
 
-**Visual Effects:**
+The browser suite covers EN/ZH routes in desktop Chromium, touch Chromium and touch WebKit; a separate 320–1920px matrix checks type roles, color tokens, reading bounds, layout and spacing. Navigation, scanning interaction, reduced motion, metadata, discovery endpoints and actual image decoding are included. These are browser simulations, not a claim of physical iPhone testing.
 
-- Metaball sizes and influence
-- Color schemes and intensity
-- Glow effects around mouse
-- Pulse animation settings
+The runner builds a temporary copy, serves it only at `127.0.0.1:3107`, and cleans up after itself. It will not reuse an unknown server, overwrite your active `.next`, or load local `.env` files. Port 3107 must be free. Production builds may need network access for Google Fonts.
 
-### 🎨 Adding New Artists
+Evidence lives in ignored `artifacts/harness/`. `run.json` records the latest run status; the HTML report contains browser results, screenshots, metrics and failure traces. Previous reports move to timestamped `history/` before a new run, so an early build failure cannot leave an old green report presented as current. Remove old local evidence when no longer needed; it is never published with the site. To focus a diagnosis, use e.g. `npm run test:browser -- --project chromium-desktop --grep '1041px'`; a filtered run is not a full release check.
 
-1. **Update artist data** in `src/data/artists.ts`
-2. **Add translations** in `src/messages/en.json` and `src/messages/zh.json`
-3. **Add artist image** to `public/` folder
+### What the harness does not decide
 
-See `src/data/ARTIST_GUIDE.md` for detailed instructions.
+Passing tests is **not aesthetic approval**. Inspect the changed areas in both languages on desktop and mobile; explain the focal point, reading rhythm, image choice/crop and copy. Style changes need same-viewport before/after evidence and a reason grounded in the brand system.
 
-### 🌐 Deployment
+`reviewNotes` produces non-blocking **MANUAL REVIEW** diagnostics. A green run can still have unresolved factual questions; disclose the relevant ones and verify them before changing or reusing the affected claims. The current register flags Session 003's date semantics and the promotional “Dublin's first Yunnan menu” claim. Historical plans and editorial analysis must not be relabeled as confirmed facts to pass a check.
 
-#### Vercel (Recommended)
+The decision register provides scoped review questions (B01–B05, V01), not an automated brand score. Full background archives stay outside versioned files; an optional ignored `docs/design/history-reference-index.md` locates local sources. Missing originals should be disclosed, and derived maintenance notes must not become circular evidence for their own authority.
 
-```bash
-npm run build
-```
+`harness/brand-contract.json` records intentional visual invariants and broad spacing ranges, not every pixel. A deliberate new design can change them with updated rationale and review. Screenshots are evidence for human review, not automatically accepted golden snapshots: [Playwright notes that rendering varies with platform and environment](https://playwright.dev/docs/test-snapshots).
 
-Deploy to Vercel with automatic optimizations for Next.js.
+The GitHub workflow runs on PRs and pushes to `main` and retains evidence for 14 days. This file alone does **not** make checks required or delay Vercel's direct-main deployment. Until repository protection/deployment gates are explicitly configured, run local verification before publishing and review the evidence before merging.
 
-#### Other Platforms
+## Public channels
 
-```bash
-npm run build
-npm start
-```
-
-### 📞 Contact & Social Media
-
-- **Website**: [theneobee.club](https://theneobee.club)
-- **YouTube**: [@TheNeoBeeClub](https://www.youtube.com/@TheNeoBeeClub)
-- **Location**: Dublin, Ireland 🇮🇪
-
-### 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
-## 中文版本
-
-### 🎯 关于 The NeoBee Club
-
-**The NeoBee Club** 是一个位于都柏林的音乐爱好者团体，探索灵魂、爵士和电子等多元音乐风格。我们热衷于通过 DJ 演出、现场表演和创意合作分享音乐的乐趣。
-
-这个代码仓库包含我们官方网站的源代码，使用现代网络技术构建，展示我们的艺术家、音乐作品和即将举行的活动。
-
-### 🌟 功能特色
-
-#### 🎨 **交互式视觉体验**
-
-- **Three.js 元球动画**: 令人惊叹的基于 WebGL 的有机 blob 动画，响应鼠标移动（灵感来源于 [Codrops 教程](https://tympanus.net/codrops/2025/06/09/how-to-create-interactive-droplet-like-metaballs-with-three-js-and-glsl/)）
-- **流畅动画**: Framer Motion 驱动的转场效果和微交互
-- **响应式设计**: 在所有设备和屏幕尺寸上完美体验
-
-#### 🌍 **国际化支持**
-
-- **双语支持**: 完整的英文和中文语言支持
-- **SEO 优化**: 多语言元标签和结构化数据
-- **自动语言检测**: 基于用户偏好的智能路由
-
-#### 🎵 **音乐展示**
-
-- **艺术家专区**: 动态艺术家档案，集成社交媒体
-- **音乐合集**: 嵌入式音乐视频和音频内容
-- **作品画廊**: 我们音乐发布的完整收藏
-
-#### ⚡ **性能与 SEO**
-
-- **Next.js 15**: 最新的 React 框架，采用 App Router
-- **服务端渲染**: 优化的加载速度和 SEO
-- **Vercel Analytics**: 实时性能监控
-- **Google Search Console**: 全面的 SEO 优化
-
-#### 🎛️ **可定制动画**
-
-元球效果包含易于调整的参数：
-
-- 动画速度控制
-- 鼠标交互敏感度
-- 视觉效果强度
-- 色彩方案修改
-
-### 🛠️ 技术栈
-
-#### **前端框架**
-
-- **Next.js 15** - 带有 App Router 的 React 框架
-- **React 19** - 最新的 React 并发特性
-- **TypeScript** - 类型安全开发
-
-#### **样式和动画**
-
-- **Tailwind CSS 4** - 实用优先的 CSS 框架
-- **Framer Motion** - 高级动画库
-- **自定义 CSS 动画** - 渐变动画和效果
-
-#### **3D 图形**
-
-- **Three.js** - WebGL 3D 图形库
-- **自定义着色器** - GLSL 片段和顶点着色器
-- **交互式元球** - 实时流体模拟
-
-#### **国际化**
-
-- **next-intl** - 类型安全的国际化
-- **JSON 消息文件** - 结构化翻译管理
-
-#### **分析和 SEO**
-
-- **Vercel Analytics** - 性能监控
-- **结构化数据** - 丰富摘要和架构标记
-- **Sitemap 和 Robots** - 搜索引擎优化
-
-### 🚀 快速开始
-
-#### 前置要求
-
-- Node.js 18.0 或更高版本
-- npm、yarn、pnpm 或 bun
-
-#### 安装步骤
-
-1. **克隆仓库**
-
-   ```bash
-   git clone https://github.com/haoranzhang929/theneobeeclub.git
-   cd theneobeeclub
-   ```
-
-2. **安装依赖**
-
-   ```bash
-   npm install
-   # 或
-   yarn install
-   # 或
-   pnpm install
-   ```
-
-3. **设置环境变量**
-
-   ```bash
-   cp .env.example .env.local
-   ```
-
-   编辑 `.env.local` 配置：
-
-   ```env
-   NEXT_PUBLIC_SITE_URL=https://theneobee.club
-   NEXT_PUBLIC_GOOGLE_VERIFICATION=your_google_verification_code
-   ```
-
-4. **运行开发服务器**
-
-   ```bash
-   npm run dev
-   # 或
-   yarn dev
-   # 或
-   pnpm dev
-   ```
-
-5. **打开浏览器**
-   访问 [http://localhost:3000](http://localhost:3000) 查看网站。
-
-### 📁 项目结构
-
-```
-src/
-├── app/                    # Next.js App Router
-│   ├── [locale]/          # 国际化路由
-│   ├── globals.css        # 全局样式和动画
-│   └── layout.tsx         # 根布局
-├── components/            # React组件
-│   ├── MetaballsEffect.tsx # Three.js动画
-│   ├── HeroSection.tsx    # 着陆页部分
-│   ├── ArtistsSection.tsx # 艺术家展示
-│   └── ...                # 其他UI组件
-├── data/                  # 静态数据和内容
-│   ├── artists.ts         # 艺术家信息
-│   └── works.ts           # 音乐作品数据
-├── messages/              # 国际化
-│   ├── en.json           # 英文翻译
-│   └── zh.json           # 中文翻译
-└── lib/                   # 工具函数
-    └── animations.ts      # Framer Motion变体
-```
-
-### 🎛️ 自定义动画
-
-Three.js 元球效果包含标有 🎛️ 表情符号的可调参数：
-
-**动画速度:**
-
-```glsl
-// 整体动画速度 (0.1 = 非常慢 → 1.5 = 非常快)
-float t = u_time * 0.2;
-```
-
-**鼠标跟随:**
-
-```javascript
-// 鼠标跟随速度 (0.01 = 慢 → 0.3 = 快)
-const lerpFactor = 0.01;
-```
-
-**视觉效果:**
-
-- 元球大小和影响范围
-- 色彩方案和强度
-- 鼠标周围的发光效果
-- 脉冲动画设置
-
-### 🎨 添加新艺术家
-
-1. **更新艺术家数据** 在 `src/data/artists.ts`
-2. **添加翻译** 在 `src/messages/en.json` 和 `src/messages/zh.json`
-3. **添加艺术家图片** 到 `public/` 文件夹
-
-详细说明请查看 `src/data/ARTIST_GUIDE.md`。
-
-### 🌐 部署
-
-#### Vercel（推荐）
-
-```bash
-npm run build
-```
-
-部署到 Vercel，自动为 Next.js 优化。
-
-#### 其他平台
-
-```bash
-npm run build
-npm start
-```
-
-### 📞 联系和社交媒体
-
-- **网站**: [theneobee.club](https://theneobee.club)
-- **YouTube**: [@TheNeoBeeClub](https://www.youtube.com/@TheNeoBeeClub)
-- **地点**: 爱尔兰都柏林 🇮🇪
-
-### 📝 许可证
-
-此项目是开源的，遵循 [MIT 许可证](LICENSE)。
-
----
-
-**Made with ❤️ by The NeoBee Club Team**
+[Website](https://theneobee.club) · [Instagram](https://www.instagram.com/theneobeeclub) · [YouTube](https://youtube.com/@theneobeeclub) · [Email](mailto:theneobeeclub@gmail.com)

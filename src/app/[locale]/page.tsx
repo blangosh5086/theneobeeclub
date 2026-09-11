@@ -7,7 +7,7 @@ import HomeHeroMotion from "@/components/site/HomeHeroMotion";
 import HomePageIndex from "@/components/site/HomePageIndex";
 import SessionCard from "@/components/site/SessionCard";
 import SiteShell from "@/components/site/SiteShell";
-import { experiences, founders, isSiteLocale, sessions, siteCopy, socialLinks } from "@/data/site";
+import { founders, getHomeSelection, isSiteLocale, siteCopy, socialLinks } from "@/data/site";
 import { generatePageMetadata } from "@/lib/seo";
 
 export function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -19,7 +19,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   if (!isSiteLocale(locale)) notFound();
   setRequestLocale(locale);
   const copy = siteCopy[locale];
-  const featuredExperience = experiences[0];
+  const { featuredSession, selectedSessions, featuredExperience } = getHomeSelection();
+  const featureTitle = featuredSession.homeFeature.title[locale];
+  const featureBody = featuredSession.homeFeature.body[locale];
+  const featureEyebrow = `${copy.home.featureLabel} · ${featuredSession.number} · NeoBee Club${featuredSession.venue ? ` × ${featuredSession.venue.name}` : ""}`;
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://theneobee.club";
   const organizationId = `${baseUrl}/#organization`;
@@ -116,17 +119,17 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <section className="sessions-section sessions-section--home section-pad" id="sessions">
         <div className="home-feature-layout">
           <div className="section-heading home-feature-heading">
-            <p className="eyebrow">{copy.home.featureEyebrow}</p>
+            <p className="eyebrow">{featureEyebrow}</p>
             <h2 className={locale === "zh" ? "feature-title-phrases" : undefined}>
               {locale === "zh"
-                ? copy.home.featureTitle.split("，").map((phrase, index, phrases) => (
+                ? featureTitle.split("，").map((phrase, index, phrases) => (
                     <span key={`${phrase}-${index}`}>{phrase}{index < phrases.length - 1 ? "，" : ""}</span>
                   ))
-                : copy.home.featureTitle}
+                : featureTitle}
             </h2>
-            <p>{copy.home.featureBody}</p>
+            <p>{featureBody}</p>
           </div>
-          <SessionCard session={sessions[0]} locale={locale} featured showDetails={false} />
+          <SessionCard session={featuredSession} locale={locale} featured showDetails={false} />
         </div>
 
         <div className="home-session-archive">
@@ -136,7 +139,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <Link className="text-link" href={`/${locale}/archive`}>{copy.common.viewAll} →</Link>
           </div>
           <div className="session-grid session-grid--home">
-            {sessions.slice(1).map((session) => <SessionCard key={session.id} session={session} locale={locale} />)}
+            {selectedSessions.map((session) => <SessionCard key={session.id} session={session} locale={locale} />)}
           </div>
         </div>
       </section>
@@ -145,9 +148,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <div className="section-heading section-heading--split">
           <div>
           <p className="eyebrow">{copy.home.experienceEyebrow}</p>
-          <h2>{copy.home.experienceTitle}</h2>
+          <h2>{featuredExperience.homeFeature.title[locale]}</h2>
           </div>
-          <p>{copy.home.experienceBody}</p>
+          <p>{featuredExperience.homeFeature.body[locale]}</p>
         </div>
         <ExperienceCard experience={featuredExperience} locale={locale} compact />
       </section>

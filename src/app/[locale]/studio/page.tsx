@@ -5,7 +5,7 @@ import { setRequestLocale } from "next-intl/server";
 import PageIntro from "@/components/site/PageIntro";
 import PageSeo from "@/components/site/PageSeo";
 import SiteShell from "@/components/site/SiteShell";
-import { isSiteLocale, sessions, siteCopy } from "@/data/site";
+import { getStudioSessions, isSiteLocale, siteCopy } from "@/data/site";
 import { generatePageMetadata } from "@/lib/seo";
 
 export function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -17,6 +17,7 @@ export default async function StudioPage({ params }: { params: Promise<{ locale:
   if (!isSiteLocale(locale)) notFound();
   setRequestLocale(locale);
   const copy = siteCopy[locale];
+  const studioSessions = getStudioSessions();
   const services = [
     ["01", copy.studio.servicePhoto, copy.studio.servicePhotoBody],
     ["02", copy.studio.serviceFilm, copy.studio.serviceFilmBody],
@@ -42,7 +43,7 @@ export default async function StudioPage({ params }: { params: Promise<{ locale:
           <p className="eyebrow">{copy.studio.selectedEyebrow}</p><h2>{copy.studio.selectedTitle}</h2><p>{copy.studio.selectedBody}</p>
         </div>
         <div className="portfolio-grid">
-          {sessions.map((session) => (
+          {studioSessions.map((session) => (
             <a href={session.youtube} target="_blank" rel="noreferrer" key={session.id} className="portfolio-image">
               <Image src={session.image} alt={locale === "zh" ? `${session.title} — Session 现场画面` : `${session.title} film still`} fill sizes="(max-width: 760px) 100vw, 50vw" />
               <span>{session.title} ↗</span>

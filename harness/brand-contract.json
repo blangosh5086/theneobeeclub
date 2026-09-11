@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "referenceCommit": "4cff5da",
+  "referenceDate": "2026-09-11",
+  "siteOrigin": "https://theneobee.club",
+  "locales": ["en", "zh"],
+  "pages": ["", "/club", "/studio", "/archive", "/about", "/contact"],
+  "homeSections": ["practices", "sessions", "experiences", "studio", "experiment", "about"],
+  "maxHomeSelectedSessions": 2,
+  "colours": {
+    "--ink": "#11110f",
+    "--paper": "#efe9dc",
+    "--paper-deep": "#e4ddcf",
+    "--white": "#faf7ef",
+    "--accent": "#d85735",
+    "--signal": "#f1bd32"
+  },
+  "fonts": {
+    "display": "Playfair",
+    "body": "Montserrat",
+    "chinese": "Noto"
+  },
+  "responsiveWidths": [320, 390, 760, 1040, 1041, 1280, 1440, 1920],
+  "featuredSpacing": {
+    "titleToBody": [18, 40],
+    "imageToMetadata": [12, 24],
+    "featureToSelectedMobile": [64, 120],
+    "featureToSelectedDesktop": [110, 200]
+  }
+}

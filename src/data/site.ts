@@ -15,10 +15,31 @@ export interface Session {
   durationSeconds: number;
   recordedDate?: string;
   performer?: string;
+  homeFeature?: {
+    title: LocalizedText;
+    body: LocalizedText;
+  };
   venue?: {
     name: string;
     url: string;
     location: LocalizedText;
+  };
+}
+
+export interface Experience {
+  id: string;
+  title: LocalizedText;
+  description: LocalizedText;
+  image: string;
+  date: LocalizedText;
+  dateISO: string;
+  time: string;
+  venue: string;
+  address: string;
+  href: string;
+  homeFeature?: {
+    title: LocalizedText;
+    body: LocalizedText;
   };
 }
 
@@ -56,10 +77,7 @@ export const siteCopy = {
         "Curated sounds, distinctive spaces, and cross-cultural experiences from Dublin.",
       clubCta: "Explore NeoBee Club",
       studioCta: "Explore NeoBee Studio",
-      featureEyebrow: "New session · 003 · NeoBee Club × YiBU",
-      featureTitle: "Asia After Dusk.",
-      featureBody:
-        "Recorded in daylight at YiBU, imagined for after dark. HAOSC moves through Mandarin pop, Y2K R&B, house, jazz, and contemporary Asian sounds.",
+      featureLabel: "New session",
       branchesEyebrow: "One ecosystem, two practices",
       branchesTitle: "Built between the room and the image.",
       clubTitle: "NeoBee Club",
@@ -71,9 +89,6 @@ export const siteCopy = {
       sessionsEyebrow: "Selected sessions",
       sessionsTitle: "Music made for a real room.",
       experienceEyebrow: "Experiences",
-      experienceTitle: "A Yunnan evening, shaped through food and sound.",
-      experienceBody:
-        "At Hakkahan, a menu launch became a meeting point for food, memory, and a Yunnan-themed SP-404 set.",
       experienceMeta: "Hakkahan · Dublin · 28 June 2026",
       experienceCta: "View the event record",
       studioEyebrow: "NeoBee Studio",
@@ -201,10 +216,7 @@ export const siteCopy = {
       intro: "我们从都柏林出发，做音乐、拍影像，也让不同文化在现场相遇。",
       clubCta: "了解 NeoBee Club",
       studioCta: "了解 NeoBee Studio",
-      featureEyebrow: "最新 Session · 003 · NeoBee Club × YiBU",
-      featureTitle: "录于白昼，献给入夜之后。",
-      featureBody:
-        "HAOSC 在 YiBU 录制的现场 DJ Set，从华语流行、Y2K R&B、House 与 Jazz 出发，连接熟悉的人声、电子节奏与当代亚洲声音。",
+      featureLabel: "最新 Session",
       branchesEyebrow: "一个生态，两种实践",
       branchesTitle: "发生在现场，也延伸到影像。",
       clubTitle: "NeoBee Club",
@@ -214,9 +226,6 @@ export const siteCopy = {
       sessionsEyebrow: "精选 Sessions",
       sessionsTitle: "为真实空间而生的音乐。",
       experienceEyebrow: "现场体验",
-      experienceTitle: "从云\u2060南的味\u2060道，走进云\u2060南的声\u2060音。",
-      experienceBody:
-        "Hakkahan 发布都柏林首份云南菜单的当晚，我们带来了一套云南主题 SP-404 Set。",
       experienceMeta: "Hakkahan · 都柏林 · 2026 年 6 月 28 日",
       experienceCta: "查看活动记录",
       studioEyebrow: "NeoBee Studio",
@@ -313,6 +322,16 @@ export const sessions = [
       en: "Recorded in daylight at YiBU, imagined for after dark. HAOSC moves through Mandarin pop, Y2K R&B, house, jazz, and contemporary Asian sounds.",
       zh: "录于 YiBU 的白昼，献给入夜之后。HAOSC 从华语流行、Y2K R&B、House 与 Jazz 出发，连接熟悉的人声、电子节奏与当代亚洲声音。"
     },
+    homeFeature: {
+      title: {
+        en: "Asia After Dusk.",
+        zh: "录于白昼，献给入夜之后。"
+      },
+      body: {
+        en: "Recorded in daylight at YiBU, imagined for after dark. HAOSC moves through Mandarin pop, Y2K R&B, house, jazz, and contemporary Asian sounds.",
+        zh: "HAOSC 在 YiBU 录制的现场 DJ Set，从华语流行、Y2K R&B、House 与 Jazz 出发，连接熟悉的人声、电子节奏与当代亚洲声音。"
+      }
+    },
     image: "/session-asia-after-dusk-yibu.webp",
     youtube: "https://www.youtube.com/watch?v=mZh-MQnZiB4",
     year: "2026",
@@ -373,6 +392,16 @@ export const experiences = [
       en: "The NeoBee Club joined Hakkahan for the launch of Dublin's first Yunnan menu. A Yunnan-themed SP-404 set brought music into the evening.",
       zh: "The NeoBee Club 参与了 Hakkahan 的都柏林首份云南菜单发布，并在现场带来一套云南主题 SP-404 Set。"
     } satisfies LocalizedText,
+    homeFeature: {
+      title: {
+        en: "A Yunnan evening, shaped through food and sound.",
+        zh: "从云\u2060南的味\u2060道，走进云\u2060南的声\u2060音。"
+      },
+      body: {
+        en: "At Hakkahan, a menu launch became a meeting point for food, memory, and a Yunnan-themed SP-404 set.",
+        zh: "Hakkahan 发布都柏林首份云南菜单的当晚，我们带来了一套云南主题 SP-404 Set。"
+      }
+    },
     image: "/yunnan-menu-sp404-set.webp",
     date: {
       en: "Sunday, 28 June 2026",
@@ -384,7 +413,66 @@ export const experiences = [
     address: "32 Stoneybatter, Dublin 7, D07 X504",
     href: "https://ma.to/event/yunnan-menu-launch-kawa-band-28-jun-2026"
   }
-] as const;
+] satisfies readonly Experience[];
+
+// These placements are editorial choices. Adding an archive record does not
+// automatically feature it or expand the homepage and Studio portfolio.
+export const editorialSelection = {
+  home: {
+    featuredSessionId: "session-003",
+    selectedSessionIds: ["session-002", "session-001"],
+    featuredExperienceId: "yunnan-menu-sp404-set-2026"
+  },
+  studio: {
+    sessionIds: ["session-003", "session-002", "session-001"]
+  }
+} as const;
+
+function resolveEditorialRecord<T extends { id: string }>(
+  records: readonly T[],
+  id: string,
+  field: string
+): T {
+  const record = records.find((entry) => entry.id === id);
+  if (!record) {
+    throw new Error(`Editorial selection ${field} references unknown ID "${id}". Add the record or update editorialSelection in src/data/site.ts.`);
+  }
+  return record;
+}
+
+function resolveSessionSelection(ids: readonly string[], field: string): Session[] {
+  if (new Set(ids).size !== ids.length) {
+    throw new Error(`Editorial selection ${field} contains duplicate session IDs. Select each session only once in src/data/site.ts.`);
+  }
+  return ids.map((id) => resolveEditorialRecord<Session>(sessions, id, field));
+}
+
+export function getHomeSelection() {
+  const selection = editorialSelection.home;
+  const featuredSession = resolveEditorialRecord<Session>(sessions, selection.featuredSessionId, "home.featuredSessionId");
+  const homeFeature = featuredSession.homeFeature;
+  if (!homeFeature || locales.some((locale) => !homeFeature.title?.[locale]?.trim() || !homeFeature.body?.[locale]?.trim())) {
+    throw new Error(`Featured session "${featuredSession.id}" needs homeFeature.title and homeFeature.body in both en and zh before it can appear on the homepage. Add its approved bilingual copy in src/data/site.ts.`);
+  }
+  const selectedSessions = resolveSessionSelection(selection.selectedSessionIds, "home.selectedSessionIds");
+  if (selectedSessions.some((session) => session.id === featuredSession.id)) {
+    throw new Error(`Featured session "${featuredSession.id}" is also in home.selectedSessionIds. Remove the duplicate placement from editorialSelection in src/data/site.ts.`);
+  }
+  const featuredExperience = resolveEditorialRecord<Experience>(experiences, selection.featuredExperienceId, "home.featuredExperienceId");
+  const experienceFeature = featuredExperience.homeFeature;
+  if (!experienceFeature || locales.some((locale) => !experienceFeature.title?.[locale]?.trim() || !experienceFeature.body?.[locale]?.trim())) {
+    throw new Error(`Featured experience "${featuredExperience.id}" needs homeFeature.title and homeFeature.body in both en and zh before it can appear on the homepage. Add its approved bilingual copy in src/data/site.ts.`);
+  }
+  return {
+    featuredSession: { ...featuredSession, homeFeature },
+    selectedSessions,
+    featuredExperience: { ...featuredExperience, homeFeature: experienceFeature }
+  };
+}
+
+export function getStudioSessions(): Session[] {
+  return resolveSessionSelection(editorialSelection.studio.sessionIds, "studio.sessionIds");
+}
 
 export const founders = [
   {

@@ -6,7 +6,7 @@ import PageIntro from "@/components/site/PageIntro";
 import PageSeo from "@/components/site/PageSeo";
 import SessionCard from "@/components/site/SessionCard";
 import SiteShell from "@/components/site/SiteShell";
-import { experiences, isSiteLocale, sessions, siteCopy } from "@/data/site";
+import { getHomeSelection, isSiteLocale, sessions, siteCopy } from "@/data/site";
 import { generatePageMetadata } from "@/lib/seo";
 
 export function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -18,6 +18,7 @@ export default async function ClubPage({ params }: { params: Promise<{ locale: s
   if (!isSiteLocale(locale)) notFound();
   setRequestLocale(locale);
   const copy = siteCopy[locale];
+  const { featuredExperience } = getHomeSelection();
 
   const practices = [
     ["01", copy.club.sessionsTitle, copy.club.sessionsBody],
@@ -36,8 +37,8 @@ export default async function ClubPage({ params }: { params: Promise<{ locale: s
         <div className="session-grid">{sessions.map((session) => <SessionCard key={session.id} session={session} locale={locale} />)}</div>
       </section>
       <section className="club-experience section-pad">
-        <div className="section-heading"><p className="eyebrow">{copy.club.experiencesTitle}</p><h2>{copy.home.experienceTitle}</h2></div>
-        <ExperienceCard experience={experiences[0]} locale={locale} />
+        <div className="section-heading"><p className="eyebrow">{copy.club.experiencesTitle}</p><h2>{featuredExperience.homeFeature.title[locale]}</h2></div>
+        <ExperienceCard experience={featuredExperience} locale={locale} />
       </section>
       <section className="practice-list section-pad">
         {practices.map(([number, title, body]) => (

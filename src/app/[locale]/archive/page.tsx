@@ -67,7 +67,7 @@ export default async function ArchivePage({ params }: { params: Promise<{ locale
       </section>
       <section className="archive-section archive-section--experience section-pad">
         <div className="archive-label"><span>02</span><h2>{copy.club.experiencesTitle}</h2></div>
-        <ExperienceCard experience={experiences[0]} locale={locale} />
+        {experiences.map((experience) => <ExperienceCard key={experience.id} experience={experience} locale={locale} />)}
       </section>
       <section className="archive-section archive-section--dark section-pad">
         <div className="archive-label"><span>03</span><h2>{copy.archive.experiments}</h2></div>

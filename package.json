@@ -6,7 +6,13 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint src middleware.ts next.config.ts playwright.config.ts harness",
+    "typecheck": "tsc --noEmit --incremental false",
+    "test:content": "node --experimental-strip-types --test harness/content.test.mjs",
+    "check": "npm run test:content && npm run lint && npm run typecheck",
+    "verify": "node harness/run.mjs",
+    "test:browser": "node harness/run.mjs --browser",
+    "report": "playwright show-report artifacts/harness/report"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -25,6 +31,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "1.63.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "20.19.27",
     "@types/react": "19.2.7",

@@ -649,7 +649,7 @@ html[lang="zh"] h3 {
 
 .home-feature-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(360px, 0.95fr);
+  grid-template-columns: minmax(0, 1.6fr) minmax(380px, 0.95fr);
   column-gap: clamp(30px, 6vw, 90px);
   align-items: start;
   margin-bottom: clamp(72px, 6vw, 96px);

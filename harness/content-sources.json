@@ -1,0 +1,48 @@
+{
+  "session-001": {
+    "evidenceKind": "approved-baseline",
+    "publicationStatus": "public",
+    "scope": { "kind": "work", "id": "session-001" },
+    "asOf": "2026-08-24",
+    "sources": ["https://www.youtube.com/watch?v=eVjDLGp4xY8"],
+    "basis": "Migrated from owner-approved production content at 4cff5da; recheck the source when changing facts.",
+    "reviewNotes": []
+  },
+  "session-002": {
+    "evidenceKind": "approved-baseline",
+    "publicationStatus": "public",
+    "scope": { "kind": "work", "id": "session-002" },
+    "asOf": "2026-08-24",
+    "sources": ["https://www.youtube.com/watch?v=unfvfyO3lOk"],
+    "basis": "Migrated from owner-approved production content at 4cff5da; recheck the source when changing facts.",
+    "reviewNotes": []
+  },
+  "session-003": {
+    "evidenceKind": "owner-confirmed",
+    "publicationStatus": "public",
+    "scope": { "kind": "work", "id": "session-003" },
+    "asOf": "2026-08-24",
+    "sources": ["https://www.youtube.com/watch?v=mZh-MQnZiB4", "https://yibu.ie/"],
+    "basis": "Owner confirmed the released set and venue during the August 24 update. YiBU is a restaurant. This evidence concerns this DJ session, not a separately confirmed public event or a brand-wide music restriction.",
+    "reviewNotes": [
+      {
+        "field": "uploadDate / recordedDate",
+        "note": "Existing uploadDate is 2026-08-23; recordedDate is 2026-08-24. The supplied September 11 history reports an August 24 platform premiere date too. Recheck upload versus premiere semantics and the source before changing dates; a timezone explanation is not established."
+      }
+    ]
+  },
+  "yunnan-menu-sp404-set-2026": {
+    "evidenceKind": "owner-confirmed",
+    "publicationStatus": "public",
+    "scope": { "kind": "work", "id": "yunnan-menu-sp404-set-2026" },
+    "asOf": "2026-07-22",
+    "sources": ["https://ma.to/event/yunnan-menu-launch-kawa-band-28-jun-2026"],
+    "basis": "Owner confirmed website use and corrected the performance description: Hao played a Yunnan-themed SP-404 set. Kawa was among the tracks, not a live band performance. The historical URL slug is not evidence of performer billing.",
+    "reviewNotes": [
+      {
+        "field": "description / homeFeature.body",
+        "note": "The existing 'Dublin's first Yunnan menu' wording is a promotional claim, not independently verified city-wide exclusivity. Verify or attribute it before reusing or expanding the claim."
+      }
+    ]
+  }
+}
